@@ -1,9 +1,13 @@
 for file in *
 do
-    val=`du "$file" `
-    if [ `du -s "$file" | cut -f1` -eq 0 ]
-    then
-        echo `du "$file" `
-        echo `rmdir "$file"`
+    # Check if it's a directory
+    if [ -d "$file" ]; then
+        # Get the size of the folder in kilobytes
+        folder_size=$(du -s "$file" | cut -f1)
+        # Check if the size is less than 1024 KB (1 MB)
+        if [ "$folder_size" -lt 1024 ]; then
+            echo "Deleting folder: $file (Size: ${folder_size}KB)"
+            rm -r "$file"
+        fi
     fi
 done
